@@ -11,7 +11,7 @@ function App() {
   const [content, setContent] = useState("");
   const [editId, setEditId] = useState(null);
 
-  // Load data safely
+  // Load data
   useEffect(() => {
     const status = localStorage.getItem("loggedIn");
     setIsLoggedIn(status === "true");
@@ -29,7 +29,7 @@ function App() {
     localStorage.setItem("posts", JSON.stringify(data));
   };
 
-  // Add / Update
+  // Add / Update post
   const handleSubmit = () => {
     if (!title.trim() || !content.trim()) return;
 
@@ -41,10 +41,7 @@ function App() {
       );
       setEditId(null);
     } else {
-      updated = [
-        { id: Date.now(), title, content },
-        ...posts
-      ];
+      updated = [{ id: Date.now(), title, content }, ...posts];
     }
 
     setPosts(updated);
@@ -67,15 +64,19 @@ function App() {
     setEditId(post.id);
   };
 
+  // Logout
   const logout = () => {
     localStorage.removeItem("loggedIn");
     setIsLoggedIn(false);
   };
 
-  // 🔐 Auth UI
+  // 🔐 Login / Signup
   if (!isLoggedIn) {
     return isLoginPage ? (
-      <Login setIsLoggedIn={setIsLoggedIn} setIsLoginPage={setIsLoginPage} />
+      <Login
+        setIsLoggedIn={setIsLoggedIn}
+        setIsLoginPage={setIsLoginPage}
+      />
     ) : (
       <Signup setIsLoginPage={setIsLoginPage} />
     );
@@ -90,10 +91,11 @@ function App() {
         Logout
       </button>
 
+      {/* FORM */}
       <div style={styles.form}>
         <input
           style={styles.input}
-          placeholder="Title"
+          placeholder="Enter title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -110,6 +112,7 @@ function App() {
         </button>
       </div>
 
+      {/* POSTS */}
       <div style={styles.grid}>
         {posts.map((post) => (
           <div key={post.id} style={styles.card}>
@@ -117,9 +120,13 @@ function App() {
             <p>{post.content}</p>
 
             <div>
-              <button style={styles.edit} onClick={() => editPost(post)}>
+              <button
+                style={styles.edit}
+                onClick={() => editPost(post)}
+              >
                 Edit
               </button>
+
               <button
                 style={styles.delete}
                 onClick={() => deletePost(post.id)}
@@ -140,75 +147,94 @@ const styles = {
     margin: "auto",
     padding: "20px",
     fontFamily: "Segoe UI",
-    background: "#f3f0ff",
+    background: "#f5f3ff",
     minHeight: "100vh"
   },
+
   heading: {
     textAlign: "center",
-    color: "#5f27cd"
+    color: "#6c5ce7",
+    marginBottom: "20px"
   },
+
   form: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "10px",
-    marginBottom: "20px"
+    gap: "12px",
+    marginBottom: "30px"
   },
+
   input: {
-    padding: "10px",
-    width: "300px",
-    borderRadius: "8px",
-    border: "1px solid #ccc"
+    width: "100%",
+    maxWidth: "400px",
+    padding: "12px",
+    borderRadius: "10px",
+    border: "1px solid #ddd",
+    outline: "none"
   },
+
   textarea: {
-    padding: "10px",
-    width: "300px",
-    height: "80px",
-    borderRadius: "8px",
-    border: "1px solid #ccc"
+    width: "100%",
+    maxWidth: "400px",
+    height: "100px",
+    padding: "12px",
+    borderRadius: "10px",
+    border: "1px solid #ddd",
+    outline: "none"
   },
+
   button: {
     padding: "10px 20px",
-    background: "#6c5ce7",
+    background: "#7c3aed",
     color: "white",
     border: "none",
-    borderRadius: "8px",
-    cursor: "pointer"
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontWeight: "bold"
   },
+
   logout: {
     display: "block",
-    margin: "10px auto",
-    background: "#e74c3c",
+    margin: "0 auto 20px",
+    background: "#ef4444",
     color: "white",
     border: "none",
     padding: "8px 15px",
-    borderRadius: "6px",
+    borderRadius: "8px",
     cursor: "pointer"
   },
+
   grid: {
     display: "grid",
-    gap: "15px"
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: "20px"
   },
+
   card: {
     background: "white",
     padding: "15px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+    borderRadius: "15px",
+    boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+    textAlign: "left"
   },
+
   edit: {
     marginRight: "10px",
-    background: "#f39c12",
+    background: "#f59e0b",
     border: "none",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    cursor: "pointer"
+    padding: "6px 12px",
+    borderRadius: "8px",
+    cursor: "pointer",
+    color: "white"
   },
+
   delete: {
-    background: "#e74c3c",
+    background: "#dc2626",
     color: "white",
     border: "none",
-    padding: "5px 10px",
-    borderRadius: "5px",
+    padding: "6px 12px",
+    borderRadius: "8px",
     cursor: "pointer"
   }
 };
