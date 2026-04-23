@@ -5,12 +5,6 @@ This project allows users to sign up, log in, and manage blog posts with full CR
 
 ---
 
-## 🚀 Live Demo
-👉 https://your-app.vercel.app  
-*(Add your deployed link here)*
-
----
-
 ## 📌 Features
 
 - 🔐 **User Authentication**
